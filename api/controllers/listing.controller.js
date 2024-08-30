@@ -34,6 +34,7 @@ export const updateListing = async (req, res, next) => {
   if (!listing) {
     return next(errorHandler(404, "Listing not found"));
   }
+  res.status(200).json(listing);
 
   if (req.user.id !== listing.userRef) {
     return next(errorHandler(401, "you can only update your own listings!"));

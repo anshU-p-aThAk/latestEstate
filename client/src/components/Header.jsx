@@ -1,5 +1,5 @@
 import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 
@@ -7,28 +7,21 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const location = useLocation(); // Ensure useLocation is imported
-
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const urlParams = new URLSearchParams(location.search); // Get current URL parameters
-    urlParams.set("searchTerm", searchTerm); // Update searchTerm in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
-    navigate(`/search/?${searchQuery}`); // Navigate with updated query
+    navigate(`/search?${searchQuery}`);
   };
 
-  // Update search term based on URL
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search); // Parse URL parameters
+    const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
     if (searchTermFromUrl) {
-      setSearchTerm(searchTermFromUrl); // Update state with search term from URL
-    } else {
-      setSearchTerm(""); // Clear search term if not present
+      setSearchTerm(searchTermFromUrl);
     }
-  }, [location.search]); // Re-run effect on URL change
-
+  }, [location.search]);
   return (
     <header className="bg-slate-200 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
@@ -49,7 +42,7 @@ export default function Header() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button type="submit">
+          <button>
             <FaSearch className="text-slate-600" />
           </button>
         </form>
@@ -72,7 +65,7 @@ export default function Header() {
                 alt="profile"
               />
             ) : (
-              <li className="text-slate-700 hover:underline">Sign in</li>
+              <li className=" text-slate-700 hover:underline"> Sign in</li>
             )}
           </Link>
         </ul>
